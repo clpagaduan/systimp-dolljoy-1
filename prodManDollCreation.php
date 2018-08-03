@@ -72,7 +72,34 @@ if(isset($_POST['add'])){
     } else {
         echo "Error: " . mysqli_error($dbc);
     }
+    
+    $getID = "SELECT ProductID FROM product WHERE ProductName='$doll_name'";
+    
+    $resultID= mysqli_query($dbc,$getID);
+                                                    
+    while ($row=mysqli_fetch_array($resultID)){
+        $returnID = $row['ProductID'];
+        echo $returnID;
+    } 
+    
+    $query1 = "INSERT INTO product_has_attribute (ProductID, AttributeValueID) VALUES ('{$returnID}', '{$doll_hair}')";
+    $query2 = "INSERT INTO product_has_attribute (ProductID, AttributeValueID) VALUES ('{$returnID}', '{$doll_eye}')";
+    $query3 = "INSERT INTO product_has_attribute (ProductID, AttributeValueID) VALUES ('{$returnID}', '{$doll_skin}')";
+    $query4 = "INSERT INTO product_has_attribute (ProductID, AttributeValueID) VALUES ('{$returnID}', '{$doll_gen}')";
+    $query5 = "INSERT INTO product_has_attribute (ProductID, AttributeValueID) VALUES ('{$returnID}', '{$doll_size}')";
+    
+    mysqli_query($dbc, $query1);
+    mysqli_query($dbc, $query2);
+    mysqli_query($dbc, $query3);
+    mysqli_query($dbc, $query4);
+    mysqli_query($dbc, $query5);
 }
+//    if (mysqli_query($dbc, $getID)){
+//        $returnID =
+//        echo "ID: " . $
+//            
+//            
+//    }
 
 if (isset($_POST['submit'])){
         $message=NULL;
@@ -415,7 +442,7 @@ if (isset($_POST['submit'])){
                                                     while ($row=mysqli_fetch_array($resultHair)){
                                                     $hair=$row['ValueName'];
                                                         
-                                                    echo "<option value='".$row['ValueName']."'>{$row['ValueName']}</option>";
+                                                    echo "<option value='".$row['ValueID']."'>{$row['ValueName']}</option>";
                                                     } 
                                                 ?>
                                                 </select>
@@ -428,13 +455,13 @@ if (isset($_POST['submit'])){
                                                 <label>Eye Color</label>
                                                 <select class="form-control" name="doll_eye">
                                                 <?php   
-                                                    $queryEye = "SELECT ValueName FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=3;";
+                                                    $queryEye = "SELECT * FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=3;";
                                                     
                                                     $resultEye= mysqli_query($dbc,$queryEye);
                                                     
                                                     while ($row=mysqli_fetch_array($resultEye)){
        
-                                                    echo "<option value='".$row['ValueName']."'>{$row['ValueName']}</option>";
+                                                    echo "<option value='".$row['ValueID']."'>{$row['ValueName']}</option>";
                                                     } 
                                                 ?>
                                                 </select>
@@ -446,12 +473,12 @@ if (isset($_POST['submit'])){
                                                 <label>Skin Color</label>
                                                 <select class="form-control" name="doll_skin">
                                                 <?php   
-                                                    $querySkin = "SELECT ValueName FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=2;";
+                                                    $querySkin = "SELECT * FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=2;";
                                                     $resultSkin = mysqli_query($dbc,$querySkin);
                                                     
                                                     while ($row=mysqli_fetch_array($resultSkin)){
        
-                                                    echo "<option value='".$row['ValueName']."'>{$row['ValueName']}</option>";
+                                                    echo "<option value='".$row['ValueID']."'>{$row['ValueName']}</option>";
                                                     } 
                                                 ?>
                                                 </select>
@@ -465,12 +492,12 @@ if (isset($_POST['submit'])){
                                                 <label>Gender</label>
                                                 <select class="form-control" name="doll_gen">
                                                 <?php   
-                                                    $queryGen = "SELECT ValueName FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=5;";
+                                                    $queryGen = "SELECT * FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=5;";
                                                     $resultGen = mysqli_query($dbc,$queryGen);
                                                     
                                                     while ($row=mysqli_fetch_array($resultGen)){
        
-                                                    echo "<option value='".$row['ValueName']."'>{$row['ValueName']}</option>";
+                                                    echo "<option value='".$row['ValueID']."'>{$row['ValueName']}</option>";
                                                     } 
                                                 ?>
                                                 </select>
@@ -481,12 +508,12 @@ if (isset($_POST['submit'])){
                                                 <label>Size</label>
                                                 <select class="form-control" name="doll_size">
                                                 <?php   
-                                                    $querySize = "SELECT ValueName FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=4;";
+                                                    $querySize = "SELECT * FROM appdev.attributevalues JOIN attribute ON attribute.AttributeID = attributevalues.AttributeTypeID WHERE AttributeID=4;";
                                                     $resultSize = mysqli_query($dbc,$querySize);
                                                     
                                                     while ($row=mysqli_fetch_array($resultSize)){
        
-                                                    echo "<option value='".$row['ValueName']."'>{$row['ValueName']}</option>";
+                                                    echo "<option value='".$row['ValueID']."'>{$row['ValueName']}</option>";
                                                     } 
                                                 ?>
                                                 </select>
