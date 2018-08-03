@@ -2,19 +2,14 @@
 require_once('../mysql_connect.php');
 $sql = "";
 date_default_timezone_set('Asia/Manila');
-$date = date('Y-m-d');
-if (isset($_POST['ship'])){
-    $id=$_POST['id'];
-    $sql = "UPDATE Orders SET OShippedDate = DATE(NOW()), OShipmentStatus = 'Shipped' WHERE OrderID = " . $_POST['id'];
-}
+
 if (isset($_POST['paid'])){
-    echo "<div class=\"alert alert-success\" align=\"center\">
-  Successfully Paid!    
-</div>";
+    $dates = $_POST['dates'];
     $id=$_POST['id'];
-    $ORnum=$_POST['ORnum'];
-    $sql = "UPDATE Orders SET ORnumber= '".$ORnum."' ,OPaymentDate = DATE(NOW()), OPaymentStatus = 'Paid' WHERE OrderID = " . $_POST['id'];
+    $sql = "UPDATE Orders SET OShippedDate = $dates, OShipmentStatus = 'Shipped' WHERE OrderID = " . $_POST['id'];
+    $qu = mysqli_query($dbc, $sql);
 }
+
 
 if (!empty($sql))
     $qu = mysqli_query($dbc, $sql);
@@ -51,7 +46,7 @@ if (!empty($sql))
 
 </head>
 <body>
- <form action="prodManPaymentShipment.php" method="post">
+ <form action="prodManShipment.php" method="post">
 <div class="wrapper">
 	<div class="sidebar" data-background-color="white" data-active-color="info">
 
@@ -210,12 +205,13 @@ if (!empty($sql))
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
+                  
+ <div class="col-md-12">
                         <div class="card">
                             <div class="header">
                                 <p class="category">*Needs INSTRUCTIONS</p>
                             </div>
-                                <div class="content table-responsive table-full-width"style='overflow:auto; max-height:500px;'>
+                               <div class="content table-responsive table-full-width"style='overflow:auto; max-height:500px;'>
                                 
                                 <table class="table table-hover" >
                                     <thead>
@@ -229,47 +225,15 @@ if (!empty($sql))
                                     
 <?php
 
-//PAID
-$query="SELECT *, C.CName from Orders O join ClientAccount C on O.OCompanyID=C.CompanyID WHERE OPaymentStatus='Unpaid' AND OrderStatus='Approved' AND CompanyID = OCompanyID";
+//SHIP
+$query="SELECT *, C.CName from Orders O join ClientAccount C on O.OCompanyID=C.CompanyID WHERE OShipmentStatus='Not shipped'  AND OrderStatus='Approved' AND CompanyID = OCompanyID";
 $result=mysqli_query($dbc,$query);
 
 $numRows = mysqli_num_rows($result);
                                     
-//SHIP
-$query2="SELECT *, C.CName from Orders O join ClientAccount C on O.OCompanyID=C.CompanyID WHERE ManufacturingStatus='Completed' AND OShipmentStatus='Not shipped' AND CompanyID = OCompanyID";
-$result2=mysqli_query($dbc,$query2);
-
-$numRows2 = mysqli_num_rows($result2);
-    if($numRows ==0 && $numRows2 == 0){
-        $message="No orders to show";
-    }
-    
-//SHIP
-while($row=mysqli_fetch_array($result2,MYSQLI_ASSOC)){
-
-$id=$row['OrderID'];
-
-echo 
-"
-<tbody>
-<tr>
-
-<td><b><a href=\"prodManCurrentOrderID.php?id=$id \">{$row['OrderID']}</a></b></td>
-<td><b>{$row['CName']}</b></td>
-<td><b>{$row['OQuantity']}</b></td>
-<td><b>{$row['OOrderedDate']}</b></td>
-<td><b>{$row['ORequiredDate']}</b></td>
 
 
-<td>
-                            <form action=\"prodManPaymentShipment.php\" method=\"post\">
-                            <input type = \"submit\" name =\"ship\" class=\"btn btn-fill btn-success\" value=\"SHIP\">
-                            <input type = \"hidden\" name =\"id\" class=\"\" value=\"".$id."\">
-                            </form></td></tr>
-";
-    
-}
-                                    
+                             
 //PAID
 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 
@@ -289,7 +253,7 @@ echo
 
 <td>
                            
-                            <input type = \"button\"  class=\"btn btn-fill btn-danger\" value=\"PAID\" data-toggle=\"modal\" data-target=\"#exampleModal\">
+                            <input type = \"button\"  class=\"btn btn-fill btn-success\" value=\"SHIP\" data-toggle=\"modal\" data-target=\"#exampleModal\">
                             <input type = \"hidden\" name =\"id\" class=\"\" value=\"".$id."\">
                             </td></tr>
 ";
@@ -322,7 +286,6 @@ echo
 
 
 
-
                 </div>
             </div>
         </div>
@@ -338,6 +301,8 @@ echo
 
     </div>
 </div>
+
+<div></div>
 <div class="modal fade" id="exampleModal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -347,7 +312,7 @@ echo
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body"> Input Official Receipts (OR) number: <input type="number" name="ORnum" required>
+      <div class="modal-body"> Shipment Date: <input type="date" name="dates" id="dates" required>
       </div>
       <div class="modal-footer">
         <button type="submit" name ="paid"  class="btn btn-secondary">accept</button>
@@ -356,8 +321,6 @@ echo
     </div>
   </div>
 </div>
-<div></div>
-
 
 
 </form>
