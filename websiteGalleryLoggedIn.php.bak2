@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>SERVICES</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet">
+  <link href="default.css" rel="stylesheet" type="text/css" media="all">
+  <link href="fonts.css" rel="stylesheet" type="text/css" media="all">
+  <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
+</head>
+
+<body>
+  <!--?php
+
+
+
+//$shoppingCart = array();
+
+if (isset($_POST['remove'])){
+    require_once('../mysql_connect.php');
+    // echo "remove!";
+    $cID = $_POST['cartID'];
+    $xID = $_POST['sID'];
+
+//    echo ($cID);
+//    echo ($xID);
+    $query = "DELETE from appdev.cart WHERE cartID = '{$cID}'";
+    $result = mysqli_query($dbc, $query);
+}
+
+if (isset($_POST['add'])){
+    require_once('../mysql_connect.php');
+//    $chosenID = $_POST['sID'];
+//    $qty = $_POST['qty'];
+//
+//    echo ('Product ID: ');
+//    echo ($chosenID);
+//    echo ('Qty:');
+//    echo ($qty);
+
+    if (!empty($_POST['sID'])){
+        $xID = $_POST['sID'];
+        $xQty = $_POST['qty'];
+//        echo ('sID: ');
+//        echo ($xID);
+//        echo '<br-->Qty: '; // echo ($xQty); } $query = "INSERT INTO appdev.cart (productID, quantity) VALUES ('{$xID}', '{$xQty}')"; $result = mysqli_query($dbc, $query); } ?&gt;
+  <div id="header" class="container">
+    <div id="logo">
+      <h1>
+        <a href="websiteHome.php">
+          <font color="#68B3C8">DOLLJOY</font>
+        </a>
+      </h1>
+    </div>
+    <div id="menu">
+      <ul>
+        <li class="active">
+          <a href="websiteHomeLoggedIn.php" accesskey="1" title="">Homepage</a>
+        </li>
+        <li>
+          <a href="websiteGalleryLoggedIn.php" accesskey="5" title="">Gallery</a>
+        </li>
+        <li>
+          <a href="websiteServicesLoggedIn.php" accesskey="5" title="">Services</a>
+        </li>
+        <li>
+          <a href="#" accesskey="7" title="">Contact Us</a>
+        </li>
+        <li>
+          <a href="clientDashboard.php" accesskey="7" title="">Account</a>
+        </li>
+        <li>
+          <a href="websiteHome.php" accesskey="7" title="">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="banner"></div>
+  <div id="featured" class="container">
+    <!-- START OF LOGIN FORM -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <center>
+      <h3>
+        <b>Doll Catalog</b>
+      </h3>
+    </center>
+    <table>
+      <tbody>
+        <tr>
+          <td> henlo 1 </td>
+          <td> henlo 2 </td>
+        </tr>
+        <tr>
+          <td> henlo 3 </td>
+          <td> henlo 4 </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="container-fluid">
+      <h1>Order Dolls</h1>
+      <div class="row">
+        <div class="col-lg=5">
+          <p>henlo</p>
+        </div>
+        <div class="col-lg=7">
+          <p>henlo</p>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="containter-fluid">
+        <div class="row">
+          <div class="col-md=12"> </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <center>
+        <h3>
+          <b>Shopping Cart</b>
+        </h3>
+      </center>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="content table-responsive table-full-width ">
+                <div style="width:45%; display: inline-block; border:1px solid black;"> Size: $size
+                  <br>
+                  <b>Hair:</b> $hair
+                  <br>
+                  <b>Skin:</b> $skin
+                  <br>
+                  <b>Eye Color:</b> $eye"; // $image2 = '
+                  <img src="data:image/jpeg;base64,'.base64_encode($image).'" style="width:128px;height:128px">'; echo ' ' ; echo ''; } // echo '
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>
+                          <p class="category">Product ID</p>
+                        </th>
+                        <th>
+                          <p class="category">Doll Name</p>
+                        </th>
+                        <th>
+                          <p class="category">Specifications</p>
+                        </th>
+                        <th>
+                          <p class="category">Description</p>
+                        </th>
+                        <!--                                        <th><p class="category">Photo</p></th>-->
+                        <th>
+                          <p class="category">Quantity</p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <!--?php
+                                    require_once('../mysql_connect.php');
+                                    $message="";
+                                    $query="SELECT * FROM appdev.cart WHERE userName = '$username'";
+                                    $result=mysqli_query($dbc,$query);
+
+                                    $numRows = mysqli_num_rows($result);
+                                    if($numRows ==0){
+                                        $message="No accounts to show";
+                                    }
+
+                                    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                                        $caID = $row['cartID'];
+                                        $id = $row['productID'];
+//                                        echo ($id);
+                                        $name = $row['productName'];
+                                        $size = $row['prefSize'];
+                                        $desc = $row['productDesc'];
+                                        $hair = $row['prefHair'];
+                                        $skin = $row['prefSkin'];
+                                        $eye  = $row['prefEye'];
+                                        $qty  = $row['quantity'];
+
+                                        $specs = "<b-->
+                    <tbody>
+                      <tr>
+                        <td>'.$id.'</td>
+                        <td>'.$name.'</td>
+                        <td>'.$specs.'</td>
+                        <td>'.$desc.'</td>
+                        <td>'.$qty.'</td>
+                        <input type="hidden" name="cartID" value="'.$caID.'">
+                        <input type="hidden" name="sID" value="'.$id.'">
+                        <td align="left">
+                          <input type="submit" name="remove" class="btn btn-danger btn-fill" value="Remove"> </td>
+                      </tr>
+                      <tr>
+                        <td align="left"> //
+                          <input type="submit" name="edit" class="btn btn-info btn-fill" value="Edit"> // </td>
+                      </tr>
+                    </tbody>
+                  </table>'; ?&gt; </div>
+              </div>
+            </div>
+            <!--                        <input type="submit" name="remove" class="btn btn-success btn-fill" value="Proceed to Checkout" pull-right/>-->
+            <a href="websiteGalleryLoggedInCheckout.php">
+              <button type="submit" class="btn btn-success btn-fill pull-right">Proceed to Checkout</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END OF LOGIN FORM -->
+    <div id="copyright" class="container">
+      <p>© Untitled. All rights reserved. | Photos by
+        <a href="http://fotogrph.com/">Fotogrph</a> | Design by
+        <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
+    </div>
+  </div>
+  <pingendo onclick="window.open('https://pingendo.com/', '_blank')" style="cursor:pointer;position: fixed;bottom: 10px;right:10px;padding:4px;background-color: #00b0eb;border-radius: 8px; width:250px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white">Made with Pingendo Free&nbsp;&nbsp;
+    <img src="https://pingendo.com/site-assets/Pingendo_logo_big.png" class="d-block" alt="Pingendo logo" height="16">
+  </pingendo>
+</body>
+
+</html>
