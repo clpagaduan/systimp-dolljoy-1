@@ -329,7 +329,7 @@ if (isset($_POST['activate'])){
                                     <thead>
                                         <th><p class="category"><b>COMPANY</b></p></th>
                                         <th><p class="category"><b>REPRESENTATIVE</b></p></th>
-                                        <th><p class="category"></p></th>
+                                        <th><p class="category"><b>DESIGNATED USERNAME</b></p></th>
                                     </thead>
 
 <?php
