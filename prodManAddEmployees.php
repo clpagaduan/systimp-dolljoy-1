@@ -320,11 +320,13 @@ if(!isset($message) && empty($message)){
                     <div class="col-md-10">
                         <div class="card">
                             <div class="header">
-                                <p class="category"><h5><b>1) Enter employee details to add an employee account</b></h5>
-                                <h5><b>2) Once employee details are filled out, click 'ADD EMPLOYEE ACCOUNT' to finish adding the new employee</b></h5>
+                      
+                                
+                                  <p class="category">1) 1) Enter employee details to add an employee account<br>
+2) Once employee details are filled out, click 'ADD EMPLOYEE ACCOUNT' to finish adding the new employee</p>
                                 
                             
-                                </p>
+                               
                              
                             </div>    
                             <div class="content table-responsive table-full-width">
@@ -355,10 +357,10 @@ if(!isset($message) && empty($message)){
                                 
                                 <br>    
                                 <!-- Change this to a button or input when using this as a form -->
-                                
-                                <h5><b>&nbsp;&nbsp;&nbsp;* These fields are required</b></h5>
-                                <h5><b>&nbsp;&nbsp;&nbsp;** When an employee is added, the employee will receive an email with their username and password to the system</b></h5>
-                                
+                                <p class="category"> 
+                               &nbsp;&nbsp;&nbsp;* These fields are required <br>
+                                &nbsp;&nbsp;&nbsp;** When an employee is added, the employee will receive an email with their username and password to the system
+                                </p>
                                 <br>&nbsp;
                                 <input class="btn btn-sm btn-success btn-fill" type="button" value="Add employee account " data-toggle="modal" data-target="#exampleModal">
                                 <br><br>
