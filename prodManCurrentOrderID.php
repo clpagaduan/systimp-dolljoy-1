@@ -612,10 +612,10 @@ $orderID = $_GET['id'];
 
 <br><br>
 <?php
-if ($pstatus!='Paid')                        {
+
 echo "<a href='prodManCurrentOrderIDEditable.php?id=$id";?>
     <?php echo"'><button type='submit' name= 'Edit' class='btn btn-success btn-fill pull-right'>Edit this Order</button></a>";
-} ?>
+                                    ?>
 <a href="prodManCurrentOrders.php"><button class="btn btn-default btn-fill pull-right">Back to Orders</button></a>
 
 
