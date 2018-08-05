@@ -1,8 +1,7 @@
 <?php
 require_once('../mysql_connect.php');
 $sql = "";
-$username = "kurt";
-$reps = 1;
+
 date_default_timezone_set('Asia/Manila');
 $date = date('Y-m-d');
 if (isset($_POST['ship'])){
@@ -29,18 +28,16 @@ if (isset($_POST['update'])){
     $sql = "UPDATE Orders SET Status = Status+1 WHERE OrderID = " . $_POST['updateid'] ;
 }
 
+if (isset($_POST['restart'])){
 
-
-if (isset($_POST['fill'])){
-    $id=$_POST['id'];
-    $reps = $_POST['fillq'];
-    $prid = $_POST['prid'];
-    $sql = "INSERT INTO product_serial_audit (`ProductID`, `OrderID`, `audit_employee_username`, `audit_timelog`) VALUES ('$prid', '$id', '$username', NOW())";
+    $id=$_POST['updateid'];
+    $sql = "UPDATE Orders SET Status = 0 WHERE OrderID = " . $_POST['updateid'] ;
 }
+
+
+
 if (!empty($sql))
-  for ($i = 0; $i < $reps; $i++){
     $qu = mysqli_query($dbc, $sql);
-  }
 ?>
 
 <!doctype html>
@@ -188,7 +185,7 @@ $numRows2 = mysqli_num_rows($result2);
 while($row=mysqli_fetch_array($result2,MYSQLI_ASSOC)){
 
 $id=$row['OrderID'];
-    
+
     $status=$row['Status'];
 $q = 5;
 
@@ -213,93 +210,93 @@ echo
 // ";
 
 
-    $falsecount = 0;
-    $made = 0;
 
- 
 
     $percent = ($status / $q) * 100;
 
 
    if ($status == 0) {
       echo
-      " 
-      
-      <td align='center'><div align=\"center\"><h>Current Process:Rotocast </h></div><br><div class='progress position-relative' style='width: 80%; '>
-        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+      "
+
+      <td align='center'><div align=\"center\"><h>Current Process: Rotocast </h></div><br><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$status aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
           <span>$status / $q</span>
         </div></div>
-      
-      
+
+
        <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
-      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button>
       <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
     }
      if ($status == 1) {
       echo
       "
-  <td align='center'><h>Current Process:Painting </h><br><div class='progress position-relative' style='width: 80%; '>
-        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+  <td align='center'><h>Current Process: Painting </h><br><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$status aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
           <span>$status / $q</span>
         </div></div>
-      
-      
+
+
        <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
-      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button>
       <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
     }
      if ($status ==2) {
       echo
       "
-   <td align='center'><h>Current Process:Hair Rooting </h><div class='progress position-relative' style='width: 80%; '>
-        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+   <td align='center'><h>Current Process: Hair Rooting </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$status aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
           <span>$status / $q</span>
         </div></div>
-      
-      
+
+
        <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
-      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button>
       <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
     }
      if ($status == 3) {
       echo
       "
-  <td align='center'><h>Current Process:Outfit Sewing </h><div class='progress position-relative' style='width: 80%; '>
-        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+  <td align='center'><h>Current Process: Outfit Sewing </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$status aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
           <span>$status / $q</span>
         </div></div>
-      
-      
+
+
        <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
-      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button>
       <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
     }
      if ($status == 4) {
       echo
       "
 
-  <td align='center'><h>Current Process:Assembly </h><div class='progress position-relative' style='width: 80%; '>
-        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+  <td align='center'><h>Current Process: Assembly </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$status aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
           <span>$status / $q</span>
         </div></div>
-      
-      
+
+
        <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
-      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button>
       <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
     }
     if ($status == 5) {
       echo
       "
-  
-  <td align='center'><h>Current Process:Finished </h><div class='progress position-relative' style='width: 80%; '>
-        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+
+  <td align='center'><h>Current Process: Finished </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$status aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
           <span>$status / $q</span>
         </div></div>
-      
-      
+
+        <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
+       <input type = \"submit\" name =\"restart\" class=\"btn btn-danger btn-fill\" value=\"RESTART\"></button>
+       <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>
+
        <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
-      <p onclick='update_url($id);'><input type = \"submit\" name =\"end\" class=\"btn btn-success btn-fill\" value=\"DONE\"></button></p>
+      <input type = \"submit\" name =\"end\" class=\"btn btn-success btn-fill\" value=\"DONE\"></button>
       <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
     }
 
@@ -398,19 +395,6 @@ echo
 	<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 	<script src="assets/js/demo.js"></script>
 
-  <script>
-        $('#myModal').on('shown.bs.modal', function() {
-            $('#myInput').trigger('focus')
-        })
-
-        function update_url(id)
-        {
-          if (window.location.hash != "#stopload") {
-            location.replace("employeeManufacturingStatuses.php?id=" + id + '#stopload');
-          }
-          history.pushState(null, '', '?id=' + id);
-        }
-    </script>
 
   <style>
     .progress {
