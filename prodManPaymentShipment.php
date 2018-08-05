@@ -7,7 +7,7 @@ if (isset($_POST['ship'])){
     $dates = $_POST['shipdate'];
     $id=$_POST['id'];
     
-      echo"$id $dates";
+
     $sql = "UPDATE Orders SET OShippedDate = '$dates', OShipmentStatus = 'Shipped' WHERE OrderID = $id" ;
     $qu = mysqli_query($dbc, $sql);
 
@@ -221,7 +221,7 @@ if (!empty($sql))
                                 <p class="category">1) Enter OR number to a payment to an order <br>
 2) Once the OR number is filled out, click 'PAID' to update the payment status</p>
                             </div>
-                                <div class="content table-responsive table-full-width"style='overflow:auto; max-height:250px;'>
+                                <div class="content table-responsive table-full-width"style='overflow:auto; max-height:32vh;'>
                                 
                                 <table class="table table-hover" >
                                     <thead>
@@ -233,6 +233,7 @@ if (!empty($sql))
                                          <th><p class="category"><b>  OR NUMBER</b></p></th>
                     
                                     </thead>
+                                    
                                     
 <?php
 
@@ -315,7 +316,7 @@ echo
                                 <p class="category">    <p class="category">1) Select a Date to a Shipment Date to an order <br>
 2) Once the Shipment Date is selected, click 'SHIP' to update the shipment status</p>
                             </div>
-                        <div class="content table-responsive table-full-width"style='overflow:auto; max-height:250px;'>
+                        <div class="content table-responsive table-full-width"style='overflow:auto; max-height:32vh;'>
                                 
                                 <table class="table table-hover" >
                                     <thead>

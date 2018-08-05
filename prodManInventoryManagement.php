@@ -278,7 +278,8 @@ if (!empty($sql))
                                 </table>
                                 </div>
                                 </div>
-                                 <table id="myTable" class="table table-hover">
+                                 <div class="content table-responsive table-full-width"style='overflow:auto; max-height:60vh;'>
+                                 <table id="myTable" class="table table-hover" style='overflow:auto; max-height:32vh;'>
                                   <?php  
     
                                     if (isset($_POST['receiveSupplies']))
@@ -466,7 +467,7 @@ if (!empty($sql))
                 ?> 
                                </div>
                             </div>
-                                <div class="content table-responsive table-full-width">
+                               
                                 
                                 </div>
                         </div>

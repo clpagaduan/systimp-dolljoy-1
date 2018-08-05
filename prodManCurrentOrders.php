@@ -235,7 +235,7 @@ if(isset($_POST['reject'])){
                             </div>
                             <br><br>
 
-                                <div class="content table-responsive table-full-width">
+                                <div style='overflow:auto; max-height:70vh;' class="content table-responsive table-full-width">
                                 
                                 <table class="table table-hover">
                                     <thead>
@@ -266,8 +266,8 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 $id=$row['OrderID'];
 
 echo "
-<tbody>
-<tr>
+<tbody >
+<tr >
 <td><b><a href=\"prodManCurrentOrderID.php?id=$id \">{$row['OrderID']}</a></b></td>
 
 <td><b>{$row['CName']}</b></td>

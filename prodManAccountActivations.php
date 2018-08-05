@@ -324,7 +324,7 @@ if (isset($_POST['activate'])){
                             </div>
                             <br><br>
 
-                                <div class="content table-responsive table-full-width">
+                                 <div style='overflow:auto; max-height:70vh;' class="content table-responsive table-full-width">
                                 <table class="table table-hover">
                                     <thead>
                                         <th><p class="category"><b>COMPANY</b></p></th>
