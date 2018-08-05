@@ -15,11 +15,68 @@ if (isset($_POST['paid'])){
 }
 if (isset($_POST['start'])){
     $id=$_POST['id'];
+    
+    
+    $sql2="select sum(Oquantity) as O,Quantity,Supply from Orders, suppliestotal where orderstatus = 'Approved' and Supply ='Vinyl'";
+    $result2=mysqli_query($dbc, $sql2);
+    
+     $sql3="select sum(Oquantity) as O,Quantity,Supply from Orders, suppliestotal where orderstatus = 'Approved'and ManufacturingStatus='In Progress' and Supply ='Hair'";
+    $result3=mysqli_query($dbc, $sql3);
+    
+    
+    while ($row = mysqli_fetch_array($result2)  ){
+        $Vtotal =$row['Quantity'];
+             $remove =$row['O'];
+          
+        
+    }
+    
+        
+    while ($row2 = mysqli_fetch_array($result3)  ){
+         $htotal =$row2['Quantity'];
+              $hremove =$row2['O'];
+     
+        
+    }
+    
+    
+
+if($Vtotal>=$remove && $htotal>= $hremove){
+
     $sql = "UPDATE Orders SET StartManufacturing = DATE(NOW()), ManufacturingStatus = 'In Progress' WHERE OrderID = " . $_POST['id'];
+
+    $query20 = "update suppliestotal set quantity=quantity-(select sum(weightHair) from ordersrefs where OrderID=$id )where supply ='Hair'";
+       mysqli_query($dbc, $query20);
+    
+    $query30 = "update suppliestotal set quantity=quantity-(select sum(weightVinyl) from ordersrefs  WHERE OrderID = $id ) where supply ='Vinyl'";
+
+       mysqli_query($dbc, $query30);
+
+        echo"<div class=\"alert alert-success\">
+  <strong>Success!</strong>Successfully started.
+</div>";
 }
+    
+    else{
+        echo"<div class=\"alert alert-danger\">
+  <strong>Success!</strong> Not Enough Materials.
+</div>";
+        
+        
+    }
+    
+
+}
+
 if (isset($_POST['end'])){
     $id=$_POST['updateid'];
     $sql = "UPDATE Orders SET EndManufacturing = DATE(NOW()), ManufacturingStatus = 'Completed' WHERE OrderID = " . $_POST['updateid'];
+    
+    
+    
+
+    
+    
 }
 
 

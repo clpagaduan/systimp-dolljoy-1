@@ -15,12 +15,7 @@
         mysqli_query($dbc, $query);
         
         
-           $query20 = "update suppliestotal set quantity=quantity-(select sum(weightHair) from ordersrefs where OrderID=$id )where supply ='Hair'";
-       mysqli_query($dbc, $query20);
-    
-    $query30 = "update suppliestotal set quantity=quantity-(select sum(weightVinyl) from ordersrefs  WHERE OrderID = $id ) where supply ='Vinyl'";
-
-       mysqli_query($dbc, $query30);
+           
      
         
     }
