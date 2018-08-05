@@ -298,6 +298,8 @@
                                 
                                 
                                 $existing="SELECT COUNT(*) AS sales FROM `orders` WHERE OPaymentDate between '$sD' AND '$eD'";
+                                
+                                
 
                                 $result1=mysqli_query($dbc,$existing);
 
@@ -345,7 +347,7 @@
                                         </tr>';
 
 
-                                        $query="SELECT OrderID, FORMAT(OQuantity,0) AS qty, FORMAT(OTotalAmount,2) AS tamt FROM ORDERS WHERE OPaymentDate between '$sD' AND '$eD'";
+                                        $query="SELECT OrderID, FORMAT(OQuantity,0) AS qty, FORMAT(OTotalAmount,2) AS tamt FROM ORDERS WHERE ManufacturingStatus='Completed' AND OPaymentDate between '$sD' AND '$eD' group by orderid";
                                         $result=mysqli_query($dbc,$query);
 
 
@@ -366,7 +368,7 @@
 
                                         echo '</table>';
 
-                                        $query1="SELECT FORMAT(SUM(OQuantity),0) AS qnt, FORMAT(SUM(OTotalAmount),2) AS amt From Orders where OPaymentDate between '$sD' AND '$eD'";
+                                        $query1="SELECT FORMAT(SUM(OQuantity),0) AS qnt, FORMAT(SUM(OTotalAmount),2) AS amt From Orders where  ManufacturingStatus='Completed' AND  OPaymentDate between '$sD' AND '$eD'";
                                         $result1=mysqli_query($dbc,$query1);
 
                                         while($row=mysqli_fetch_array($result1,MYSQLI_ASSOC)){

@@ -18,9 +18,19 @@ if (isset($_POST['start'])){
     $sql = "UPDATE Orders SET StartManufacturing = DATE(NOW()), ManufacturingStatus = 'In Progress' WHERE OrderID = " . $_POST['id'];
 }
 if (isset($_POST['end'])){
-    $id=$_POST['id'];
-    $sql = "UPDATE Orders SET EndManufacturing = DATE(NOW()), ManufacturingStatus = 'Completed' WHERE OrderID = " . $_POST['id'];
+    $id=$_POST['updateid'];
+    $sql = "UPDATE Orders SET EndManufacturing = DATE(NOW()), ManufacturingStatus = 'Completed' WHERE OrderID = " . $_POST['updateid'];
 }
+
+
+if (isset($_POST['update'])){
+
+    $id=$_POST['updateid'];
+    $sql = "UPDATE Orders SET Status = Status+1 WHERE OrderID = " . $_POST['updateid'] ;
+}
+
+
+
 if (isset($_POST['fill'])){
     $id=$_POST['id'];
     $reps = $_POST['fillq'];
@@ -146,7 +156,7 @@ if (!empty($sql))
                                 <h4 class="title"><b>Update manufacturing statuses</b></h4>
                             </div>
                             <br>
-                                <div class="content table-responsive table-full-width">
+                                <div style='overflow:auto; max-height:70vh;' class="content table-responsive table-full-width">
 
                                 <table class="table table-hover">
                                     <thead>
@@ -166,7 +176,7 @@ $result=mysqli_query($dbc,$query);
 $numRows = mysqli_num_rows($result);
 
 //END
-$query2="SELECT *, C.CName from Orders O join ClientAccount C on O.OCompanyID=C.CompanyID WHERE ManufacturingStatus='In Progress' AND CompanyID = OCompanyID";
+$query2="SELECT *, C.CName from Orders O join ClientAccount C on O.OCompanyID=C.CompanyID WHERE ManufacturingStatus='In Progress' AND CompanyID = OCompanyID ";
 $result2=mysqli_query($dbc,$query2);
 
 $numRows2 = mysqli_num_rows($result2);
@@ -178,7 +188,9 @@ $numRows2 = mysqli_num_rows($result2);
 while($row=mysqli_fetch_array($result2,MYSQLI_ASSOC)){
 
 $id=$row['OrderID'];
-$q = $row['OQuantity'];
+    
+    $status=$row['Status'];
+$q = 5;
 
 echo
 "
@@ -200,41 +212,95 @@ echo
 //                            </form></td></tr>
 // ";
 
-    $query3 = "SELECT o.ProductID, o.quantity, COUNT(ps.SerialCode) AS 'made' FROM ordersrefs o JOIN product_serial_audit ps ON o.ProductID = ps.ProductID WHERE o.OrderID = $id GROUP BY o.ProductID;";
-    $result3 = mysqli_query($dbc, $query3);
 
     $falsecount = 0;
     $made = 0;
 
-    while ($row3 = mysqli_fetch_array($result3,MYSQLI_ASSOC)){
-        $made = $made + $row3['made'];
-        if ($row3['quantity'] > $row3['made'])
-          $falsecount++;
-    }
+ 
 
-    $percent = ($made / $q) * 100;
+    $percent = ($status / $q) * 100;
 
-    echo "<td align='center'><div class='progress position-relative' style='width: 130%; margin-left: -40%;'>
-        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
-          <span>$made / $q</span>
-        </div></div>";
 
-    if ($falsecount == 0 && $made >= $q){
-      echo "
-            <p onclick='update_url($id);'><button data-toggle='modal' data-target='#exampleModal' type = 'button'  class='btn btn-success btn-fill pull-left'>UPDATE</button></p>";
-
-      echo  "
-            </br></br>
-
-          <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
-            <input type = \"submit\" name =\"end\" class=\"btn btn-danger btn-fill\" value=\"END\" style='margin-left: -40%;'>
-            <input type = \"hidden\" name =\"id\" class=\"\" value=\"".$id."\">
-          </form>";
-    }
-    else if ($falsecount > 0 || $made < $q) {
+   if ($status == 0) {
       echo
-      "<p onclick='update_url($id);'><button data-toggle='modal' data-target='#exampleModal' type = 'button'  class='btn btn-success btn-fill pull-left'>UPDATE</button></p>
-      <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">";
+      " 
+      
+      <td align='center'><div align=\"center\"><h>Current Process:Rotocast </h></div><br><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+          <span>$status / $q</span>
+        </div></div>
+      
+      
+       <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
+      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
+    }
+     if ($status == 1) {
+      echo
+      "
+  <td align='center'><h>Current Process:Painting </h><br><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+          <span>$status / $q</span>
+        </div></div>
+      
+      
+       <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
+      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
+    }
+     if ($status ==2) {
+      echo
+      "
+   <td align='center'><h>Current Process:Hair Rooting </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+          <span>$status / $q</span>
+        </div></div>
+      
+      
+       <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
+      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
+    }
+     if ($status == 3) {
+      echo
+      "
+  <td align='center'><h>Current Process:Outfit Sewing </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+          <span>$status / $q</span>
+        </div></div>
+      
+      
+       <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
+      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
+    }
+     if ($status == 4) {
+      echo
+      "
+
+  <td align='center'><h>Current Process:Assembly </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+          <span>$status / $q</span>
+        </div></div>
+      
+      
+       <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
+      <p onclick='update_url($id);'><input type = \"submit\" name =\"update\" class=\"btn btn-success btn-fill\" value=\"UPDATE\"></button></p>
+      <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
+    }
+    if ($status == 5) {
+      echo
+      "
+  
+  <td align='center'><h>Current Process:Finished </h><div class='progress position-relative' style='width: 80%; '>
+        <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow=$made aria-valuemin='0' aria-valuemax= $q style='width:$percent%'>
+          <span>$status / $q</span>
+        </div></div>
+      
+      
+       <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
+      <p onclick='update_url($id);'><input type = \"submit\" name =\"end\" class=\"btn btn-success btn-fill\" value=\"DONE\"></button></p>
+      <input type = \"hidden\" name =\"updateid\" class=\"\" value=\"".$id."\">  </form>";
     }
 
 echo "</td></tr>";
@@ -259,7 +325,7 @@ echo
 
 
 
-<td>
+<td align=\"center\">
                             <form action=\"employeeManufacturingStatuses.php\" method=\"post\">
                             <input type = \"submit\" name =\"start\" class=\"btn btn-success btn-fill\" value=\"START\">
                             <input type = \"hidden\" name =\"id\" class=\"\" value=\"".$id."\">
@@ -306,56 +372,7 @@ echo
         </footer>
 
 
-    </div>
-</div>
 
-<?php
-
-$id = $_GET['id'];
-
-echo '  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Update Manufacturing Status</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <h5>Order # '.$id.' </h5>
-                <table width="100%">
-                  <tr>
-                    <td>Product ID</td>
-                    <td>Product Name</td>
-                    <td>Filled</td>
-                    <td width="15%"><td>
-                    <td> </td>
-                  </tr>';
-
-    $query2 = "SELECT o.ProductID, p.ProductName, o.quantity, (SELECT COUNT(ps.SerialCode) FROM product_serial_audit ps WHERE ps.ProductID = o.ProductID AND ps.OrderID = ".$id." ) AS 'made' FROM ordersrefs o JOIN product p ON o.ProductID = p.ProductID WHERE o.OrderID = $id GROUP BY o.ProductID";
-    $result2 = mysqli_query($dbc, $query2);
-
-    while ($row2=mysqli_fetch_array($result2,MYSQLI_ASSOC))
-    {
-          echo "  <tr>
-                    <td>". $row2['ProductID'] ."</td>
-                    <td>". $row2['ProductName'] ."</td>
-                    <td>". $row2['made'] ." / ". $row2['quantity'] ."</td>
-                    <form action='employeeManufacturingStatuses.php' method='post'><td><input type='number' class='form-control border-input' min='1' name='fillq' value=1><input type = \"hidden\" name =\"fillid\" class=\"\"></td>
-                    <td><div align='center'> <input type='hidden' name='prid' value='".$row2['ProductID']."'><input type='hidden' name='id' value='".$id."'><input type = \"submit\" name =\"fill\" class=\"btn btn-success btn-fill\" value=\"Fill\"></div></td></form>
-                  </tr>";
-    }
-
-      echo    " </table>
-              </div>
-              <div class='modal-footer'>
-                <button type='button' class='btn btn-primary' data-dismiss='modal'>Cancel</button>
-              </div>
-            </div>
-          </div>
-        </div>";
-?>
 
 </body>
 
