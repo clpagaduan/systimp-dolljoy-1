@@ -185,8 +185,8 @@
             </div>
         </nav>
 
-        
-        
+
+
 <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -200,61 +200,61 @@
                                 <?php
 
                                     require_once('../mysql_connect.php');
-                                        
+
                                         ////notif pending account
                                     $queryacct="SELECT CompanyID as 'acct' FROM clientaccount WHERE AccountStatus='Pending'";
                                     $resultacct=mysqli_query($dbc,$queryacct);
-                                    $acct = $resultacct->num_rows; 
+                                    $acct = $resultacct->num_rows;
 
                                         ////notif activate account
                                     $queryaccp="SELECT CompanyID as 'acct' FROM clientaccount WHERE AccountStatus='Approved'";
                                     $resultaccp=mysqli_query($dbc,$queryaccp);
                                     $accp = $resultaccp->num_rows;
-                                
-                                
-                                
+
+
+
                                  ////notif Vinyl
                                      $queryvinyl="SELECT Quantity  FROM suppliestotal WHERE Supply='Vinyl'";
                                     $resultvinyl=mysqli_query($dbc,$queryvinyl);
-                                
+
                                 $vinyl=mysqli_fetch_array($resultvinyl,MYSQLI_ASSOC);
-                               
-                                  
-                                
+
+
+
                                  ////notif Hair
                                     $queryhair="SELECT *  FROM suppliestotal WHERE Supply='Hair'";
                                     $resulthair=mysqli_query($dbc,$queryhair);
                                    $hair=mysqli_fetch_array($resulthair,MYSQLI_ASSOC);
-                                
-                                
-                                
-                                       
+
+
+
+
                                         ////notif pending order
                                     $queryorder="SELECT OrderID as 'orderid' FROM orders WHERE OrderStatus='Pending'";
                                     $resultorder=mysqli_query($dbc,$queryorder);
                                     $order = $resultorder->num_rows;
-                                        
+
                                         //notif order ready for payment
                                     $querypay="SELECT OrderID as 'pay' FROM orders WHERE OrderStatus='Approved' AND OPaymentStatus='Unpaid'";
                                     $resultpay=mysqli_query($dbc,$querypay);
                                     $pay= $resultpay->num_rows;
-                                        
+
                                         //notif order ready for shipping
                                     $queryship="SELECT OrderID as 'ship' FROM orders WHERE ManufacturingStatus = 'Completed' && OShipmentStatus='Not shipped'";
                                     $resultship=mysqli_query($dbc,$queryship);
                                     $ship= $resultship->num_rows;
-                                        
+
                                         //notif supplies
                                     $queryrcv="SELECT SupplyID as 'supplies' FROM supplies WHERE DateReceived IS NULL";
                                     $resultrcv=mysqli_query($dbc,$queryrcv);
                                     $rcv= $resultrcv->num_rows;
-                                    
+
                                     $total = $acct + $order + $ship + $rcv+$accp+$pay;
                                     if (($acct + $order + $ship + $rcv+$accp+$pay) > 0){
 
 
 
-                                  
+
                                   //APPROVE OR REJECT CLIENT ACCOUNTS
                                   if ($acct == 0){
                                       echo "";
@@ -269,11 +269,11 @@
                                       echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManAccountRequests.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <span aria-hidden="true"><b><font color="black">Activate Client Accounts - </b> There are client accounts pending for approval</font></span></a>
+                                            <span aria-hidden="true"><b><font color="black">Activate Client Accounts - </b> There are '.$acct.' client accounts pending for approval</font></span></a>
                                         </div>';
                                   }
 
-                                  
+
                                   //ACTIVATE CLIENT ACCOUNTS
                                   if ($accp == 0){
                                       echo "";
@@ -289,7 +289,7 @@
                                       echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManAccountActivations.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <span aria-hidden="true"><b><font color="black">Activate Client Accounts - </b> There are client accounts pending for activation</font></span></a>
+                                            <span aria-hidden="true"><b><font color="black">Activate Client Accounts - </b> There are '.$accp.' client accounts pending for activation</font></span></a>
                                         </div>';
                                   }
 
@@ -309,10 +309,10 @@
                                       echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManReviewOrders.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <span aria-hidden="true"><b><font color="black">Order Approval - </b> There are orders pending for approval</font></span></a>
+                                            <span aria-hidden="true"><b><font color="black">Order Approval - </b> There are '.$order.' orders pending for approval</font></span></a>
                                         </div>';
                                   }
-                                  
+
                                   //CONFIRM SHIPPING
                                   if ($ship == 0){
                                       echo "";
@@ -328,10 +328,10 @@
                                       echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManPaymentShipment.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <span aria-hidden="true"><b><font color="black">Shipment - </b> There are orders ready to be shipped</font></span></a>
+                                            <span aria-hidden="true"><b><font color="black">Shipment - </b> There are '.$ship.' orders ready to be shipped</font></span></a>
                                         </div>';
                                   }
-                                  
+
                                   //PENDING PAYMENT
                                   if ($pay == 0){
                                       echo "";
@@ -347,10 +347,10 @@
                                       echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManPaymentShipment.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <span aria-hidden="true"><b><font color="black">Payment - </b> There are orders pending payment</font></span></a>
+                                            <span aria-hidden="true"><b><font color="black">Payment - </b> There are '.$pay.' orders pending payment</font></span></a>
                                         </div>';
                                   }
-                                  
+
                                   //RECEIVE INVENTORY
                                   if ($rcv == 0){
                                       echo "";
@@ -366,7 +366,7 @@
                                       echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManInventoryManagement.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <span aria-hidden="true"><b><font color="black">Supplies - </b> There are supplies waiting to be received</font></span></a>
+                                            <span aria-hidden="true"><b><font color="black">Supplies - </b> There are '.$rcv.' supplies waiting to be received</font></span></a>
                                         </div>';
                                   }
                               }
@@ -379,25 +379,25 @@
                                   }
                                  $hper = $hair['Quantity']/100*100;
                                 if ($hair['Quantity'] < 5000){
-                                    
+
                                      echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManInventoryManagement.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
                                             <span aria-hidden="true"><b><font color="black">Supplies - </b>  Hair storage at '.$hper.'%</font></span></a>
                                         </div>';
                                 }
-                                
+
                                  $vper = $vinyl['Quantity']/1000*100;
-                               
+
                                 if ($vinyl['Quantity'] < 5000){
-                                    
+
                                      echo '
                                         <div class="alert alert-warning">
                                             <a href="prodManInventoryManagement.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
                                             <span aria-hidden="true"><b><font color="black">Supplies - </b> Vinyl storage at '.$vper.'% </font></span></a>
                                         </div>';
                                 }
-                                  
+
                                   ?>
                             </div>
                         </div>
@@ -417,7 +417,7 @@
 
     </div>
 </div>
-           
+
                         <div class="row">
                              <div class="col-sm-5">
                             <p class="category">   Select a button to do a specific task</p>
@@ -433,38 +433,38 @@
                                    <th align="center"><div align="center" padding >Totals</div></th>
                                     <th align="center"><div align="center" padding >Quantity</div></th></tr>
                                <?php
-                                   
-                                   
-                                   
+
+
+
                                $query2=
-                                       
+
                                        "UPDATE `appdev`.`suppliestotal`,supplies SET session =1,`Quantity`= (select sum(supplyquantity) from supplies join suppliers as s on s.SupplierID= supplies.SupplierID where s.SupplyType=\"Hair\" and supplies.datereceived is not null ) WHERE `TotalID`='2' and session =0;";
                                        $result2=mysqli_query($dbc,$query2);
                                      $query3=
-                                       
+
                                        "UPDATE `appdev`.`suppliestotal`,supplies SET session =1,`Quantity`= (select sum(supplyquantity) from supplies join suppliers as s on s.SupplierID= supplies.SupplierID where s.SupplyType=\"Vinyl\" and supplies.datereceived is not null ) WHERE `TotalID`='1' and session =0;";
                                        $result3=mysqli_query($dbc,$query3);
-                                   
-                                   
-                                   
-                                   
-                                   
 
 
 
-                                   
-                                
+
+
+
+
+
+
+
                                  $query="SELECT * FROM suppliestotal ";
                             $result=mysqli_query($dbc,$query);
                                 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                     
-                                
-                                
+
+
+
                                 echo"
                                <tr><td align =\"center\">{$row['Supply']}</td><td align =\"center\">{$row['Quantity']}</td>
                                 ";}
-                               
-                                    
+
+
                                     ?>
                                 </table>
                                 </div>

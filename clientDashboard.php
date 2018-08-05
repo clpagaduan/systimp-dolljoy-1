@@ -9,83 +9,56 @@
 
 
 
-<?php 
-session_start(); 
+<?php
+session_start();
 
 require_once('../mysql_connect.php');
-              
+
 $flag=0;
  $message=null;
 
 
  $username = $_SESSION['username'];
- $query ='SELECT FLogin FROM clientaccount WHERE CRepUsername = "'.$username.'"';
 
+ $first = 0;
+ $changed = 0;
+
+ $query ="SELECT ca.audit_id FROM clientaccount_audit ca JOIN clientaccount c ON ca.clientaccount_id = c.CompanyID WHERE c.CRepUsername = '$username' AND ca.audit_transaction = '1st Login'";
 
   $result= mysqli_query($dbc, $query);
    if ($row2 = mysqli_fetch_array($result)){
-                                      $first = $row2['FLogin'];
-                                    }
+        $first = $row2['audit_id'];
+      }
 
+  $q ="SELECT ca.audit_id FROM clientaccount_audit ca JOIN clientaccount c ON ca.clientaccount_id = c.CompanyID WHERE c.CRepUsername = '$username' AND ca.audit_transaction = 'PW Change'";
+  $result= mysqli_query($dbc, $q);
+   if ($row3 = mysqli_fetch_array($result)){
+        $changed = $row3['audit_id'];
+      }
 
-if (isset($_POST['submitpass'])){ 
-if($first == 0 ){
-    
-    
-    
-    
-    
-    
+if (isset($_POST['submitpass'])){
+  if($changed == 0 ){
      $pass =$_POST["pass"];
-        $cpass =  $_POST["cpass"];
-    echo "$first";
-    
-   echo "";
-    
- 
 
- 
- echo "$pass $cpass";
+     $cpass =  $_POST["cpass"];
 
+     if ($_POST["pass"] == $_POST["cpass"]) {
+       //$query ='SELECT FLogin FROM clientaccount WHERE CRepUsername = "'.$username.'"';
 
-   
-      echo "$pass $cpass";
-    
-    
-    
-       if ($_POST["pass"] == $_POST["cpass"]) {
-           
-           
-           $query ='SELECT FLogin FROM clientaccount WHERE CRepUsername = "'.$username.'"';
+       //$result= mysqli_query($dbc, $query);
 
+       //if ($row2 = mysqli_fetch_array($result)){
+          $query2 = "UPDATE clientaccount SET CRepPassword = PASSWORD('$cpass') WHERE CRepUsername = '".$username."'; ";
+          $r = mysqli_query($dbc, $query2);
 
-  $result= mysqli_query($dbc, $query);
-   if ($row2 = mysqli_fetch_array($result)){
-                                
-                                    
-
-           
-              $query3 = "UPDATE clientaccount SET CRepPassword = PASSWORD('$cpass'), FLogin = '1'   WHERE CRepUsername = '".$username."'; ";
-            $result = mysqli_query($dbc, $query3);
-           
-}}
-    
+          $query3 = "INSERT INTO clientaccount_audit (clientaccount_id, audit_last_userid, audit_transaction, audit_timelog) VALUES ((SELECT CompanyID FROM clientaccount WHERE CRepUsername = '$username'), 'System', 'PW Change', NOW());";
+          $result = mysqli_query($dbc, $query3);
+       //}
+    }
+  }
 }
-    
-}
-    
-
-
-    
-
-
-
-
-
-
-
-
 ?>
+
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -208,8 +181,8 @@ if($first == 0 ){
             </div>
         </nav>
 
-        
-        
+
+
 <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -220,37 +193,122 @@ if($first == 0 ){
                                 <p class="category">Take note of the following notifications before dismissing them</p>
                             </div>
                             <div class="content">
-                             
 
-         <?php 
 
-                                 
-
-                                    $querypaid="SELECT OrderID as 'startmanu' FROM orders WHERE OrderStatus='Approved' AND ManufacturingStatus ='Pending'";
+         <?php
+                                    $querypaid="SELECT o.OrderID FROM orders o JOIN clientaccount c ON o.OCompanyID = c.CompanyID WHERE o.OrderStatus='Approved' AND o.ManufacturingStatus ='Pending' AND o.OPaymentStatus='Paid' AND c.CRepUsername ='$username';";
                                    $resultpaid=mysqli_query($dbc,$querypaid);
                                    $paid= $resultpaid->num_rows;
-                                
+
                                   if ($paid == 0){
                                       echo "";
                                   }
                                   else if ($paid == 1){
-                                      echo 
+                                      echo
                                           '<div class="alert alert-success">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">Order approved - </b>Click to track orders</font></span></a>
+                                            <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">Order payment received - </b>Check back for when manufacturing begins</font></span></a>
                                         </div>';
                                   }
                                   else if ($paid > 1){
-                                      echo 
+                                      echo
                                           '<div class="alert alert-success">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">Orders approved - </b>Click to track orders</font></span></a>
+                                            <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">'.$paid.' orders payments received - </b>Check back for when manufacturing begins</font></span></a>
                                         </div>';
                                   }
-                                  
-                                  
+
+                                  $queryunpaid="SELECT o.OrderID FROM orders o JOIN clientaccount c ON o.OCompanyID = c.CompanyID WHERE o.OrderStatus='Approved' AND o.ManufacturingStatus ='Pending' AND o.OPaymentStatus='Unpaid' AND c.CRepUsername ='$username';";
+                                 $resultunpaid=mysqli_query($dbc,$queryunpaid);
+                                 $unpaid= $resultunpaid->num_rows;
+
+                                if ($unpaid == 0){
+                                    echo "";
+                                }
+                                else if ($unpaid == 1){
+                                    echo
+                                        '<div class="alert alert-success">
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                          <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">Order approved - </b>Please settle amount immediately</font></span></a>
+                                      </div>';
+                                }
+                                else if ($unpaid > 1){
+                                    echo
+                                        '<div class="alert alert-success">
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                          <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">'.$unpaid.' orders approved - </b>Please settle amount immediately</font></span></a>
+                                      </div>';
+                                }
+
+                                $querypend="SELECT o.OrderID FROM orders o JOIN clientaccount c ON o.OCompanyID = c.CompanyID WHERE o.OrderStatus='Pending' AND c.CRepUsername ='$username';";
+                               $resultpend=mysqli_query($dbc,$querypend);
+                               $pend= $resultpend->num_rows;
+
+                              if ($pend == 0){
+                                  echo "";
+                              }
+                              else if ($pend == 1){
+                                  echo
+                                      '<div class="alert alert-success">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                        <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">Order pending - </b>Check back for when order is approved</font></span></a>
+                                    </div>';
+                              }
+                              else if ($paid > 1){
+                                  echo
+                                      '<div class="alert alert-success">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                        <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">'.$pend.' orders pending - </b>Check back for when orders are approved</font></span></a>
+                                    </div>';
+                              }
+
+                                $queryprog="SELECT o.OrderID FROM orders o JOIN clientaccount c ON o.OCompanyID = c.CompanyID WHERE o.OrderStatus='Approved' AND o.ManufacturingStatus ='In Progress' AND o.OPaymentStatus='Paid' AND c.CRepUsername ='$username';";
+                               $resultprog=mysqli_query($dbc,$queryprog);
+                               $prog= $resultprog->num_rows;
+
+                              if ($prog == 0){
+                                  echo "";
+                              }
+                              else if ($prog == 1){
+                                  echo
+                                      '<div class="alert alert-success">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                        <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">Order in manufacturing - </b>Check back for status updates</font></span></a>
+                                    </div>';
+                              }
+                              else if ($prog > 1){
+                                  echo
+                                      '<div class="alert alert-success">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                        <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">'.$prog.' orders in manufacturing - </b>Check back for status updates</font></span></a>
+                                    </div>';
+                              }
+
+                              $queryship="SELECT o.OrderID FROM orders o JOIN clientaccount c ON o.OCompanyID = c.CompanyID WHERE o.OrderStatus='Approved' AND o.ManufacturingStatus ='Completed' AND o.OPaymentStatus='Paid' AND OShipmentStatus='Shipped' AND ORequiredDate > NOW() AND c.CRepUsername ='$username';";
+                             $resultship=mysqli_query($dbc,$queryship);
+                             $ship= $resultship->num_rows;
+
+                            if ($ship == 0){
+                                echo "";
+                            }
+                            else if ($ship == 1){
+                                echo
+                                    '<div class="alert alert-success">
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                      <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">Order shipped - </b>Thank you for choosing Dolljoy!</font></span></a>
+                                  </div>';
+                            }
+                            else if ($ship > 1){
+                                echo
+                                    '<div class="alert alert-success">
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                      <a href="clientOrderTracking.php"><span aria-hidden="true"><b><font color="black">'.$ship.' orders shipped - </b>Thank you for choosing Dolljoy!</font></span></a>
+                                  </div>';
+                            }
+
+
                                   ?>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -270,40 +328,44 @@ if($first == 0 ){
     </div>
 </div>
 
-   <?php 
-                if($first == 0 ){
-    
-    echo "$first";
-    
+   <?php
+  if($changed == 0 && $first == 0){
+
+
    echo "<div class=\"modal fade\" id=\"exampleModal\"  role=\"dialog\" aria-hidden=\"false\">
   <div class=\"modal-dialog\" role=\"document\">
     <div class=\"modal-content\">
       <div class=\"modal-header\">
-        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Password Entry</h5>
+        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Change Password</h5>
         <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">
           <span aria-hidden=\"true\">&times;</span>
         </button>
       </div>
       <div class=\"modal-body\">   <div class=\"form-group\">
+        <p style='margin: 10px;'>Since it's your first login, please set a new password that you would easily remember. This is the only time you may change it.</p>
                                     <label>&nbsp;&nbsp;<b>Password:  </b></label>
-                                    <input class=\"form-control\" type=\"text\" required placeholder=\"Password\" name=\"pass\" size=\"20\" maxlength=\"30\" /> 
+                                    <input class=\"form-control\" type=\"password\" required placeholder=\"Password\" name=\"pass\" size=\"20\" maxlength=\"30\" />
                                 </div>
                                 <div class=\"form-group\">
                                     <label>&nbsp;&nbsp;<b>Confirm Password:  </b></label>
-                                    <input class=\"form-control\" type=\"text\" required placeholder=\"Password\" name=\"cpass\" size=\"20\" maxlength=\"30\" /> 
+                                    <input class=\"form-control\" type=\"password\" required placeholder=\"Password\" name=\"cpass\" size=\"20\" maxlength=\"30\" />
                                 </div>
       </div>
       <div class=\"modal-footer\">
         <button  type=\"submit\" name =\"submitpass\"  class=\"btn btn-secondary\">accept</button>
-      
-}
+
+
             <button type=\"button\"  class=\"btn btn-primary\" data-dismiss=\"modal\">cancel</button>
       </div>
     </div>
   </div>
 </div>";
-    
- 
+
+
+}
+if ($first == 0){
+  $queryn ="INSERT INTO clientaccount_audit (clientaccount_id, audit_last_userid, audit_transaction, audit_timelog) VALUES ((SELECT CompanyID FROM clientaccount WHERE CRepUsername = '$username'), 'System', '1st Login', NOW());";
+  $result= mysqli_query($dbc, $queryn);
 }
                 ?>
     </form>
@@ -331,6 +393,6 @@ if($first == 0 ){
 	<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
 	<script src="assets/js/demo.js"></script>
 
-	
+
 
 </html>

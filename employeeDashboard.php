@@ -97,8 +97,8 @@
             </div>
         </nav>
 
-        
-        
+
+
 <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -112,32 +112,54 @@
                                 <?php
 
                                     require_once('../mysql_connect.php');
-                                    
-                                    $querypaid="SELECT OrderID as 'startmanu' FROM orders WHERE OrderStatus='Approved' AND ManufacturingStatus ='Pending'";
-                                   $resultpaid=mysqli_query($dbc,$querypaid);
-                                   $paid= $resultpaid->num_rows;
-                                
-                                  if ($paid == 0){
+
+                                    $querynew="SELECT OrderID as 'startmanu' FROM orders WHERE OrderStatus='Approved' AND ManufacturingStatus ='Pending' AND OPaymentStatus = 'Paid'";
+                                   $resultnew=mysqli_query($dbc,$querynew);
+                                   $new = $resultnew->num_rows;
+
+                                  if ($new == 0){
                                       echo "";
                                   }
-                                  else if ($paid == 1){
-                                      echo 
+                                  else if ($new == 1){
+                                      echo
                                           '<div class="alert alert-info">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">Order in queue - </b>Click to update manufacturing</font></span></a>
+                                            <a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">Order in queue - </b>Click to start manufacturing</font></span></a>
                                         </div>';
                                   }
-                                  else if ($paid > 1){
-                                      echo 
+                                  else if ($new > 1){
+                                      echo
                                           '<div class="alert alert-info">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
-                                            <a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">Orders in queue - </b>Click to update manufacturing</font></span></a>
+                                            <a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">'.$new.' orders in queue - </b>Click to start manufacturing</font></span></a>
                                         </div>';
                                   }
-                                  
-                                  
+
+																	$querycurr="SELECT OrderID as 'startmanu' FROM orders WHERE OrderStatus='Approved' AND ManufacturingStatus ='In Progress' AND OPaymentStatus = 'Paid'";
+																 $resultcurr=mysqli_query($dbc,$querycurr);
+																 $curr = $resultcurr->num_rows;
+
+																if ($curr == 0){
+																		echo "";
+																}
+																else if ($curr == 1){
+																		echo
+																				'<div class="alert alert-info">
+																					<button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+																					<a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">Order in queue - </b>Click to update manufacturing status</font></span></a>
+																			</div>';
+																}
+																else if ($curr > 1){
+																		echo
+																				'<div class="alert alert-info">
+																					<button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+																					<a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">'.$curr.' orders in queue - </b>Click to update manufacturing status</font></span></a>
+																			</div>';
+																}
+
+
                                   ?>
-                               
+
                         </div>
                     </div>
                 </div>

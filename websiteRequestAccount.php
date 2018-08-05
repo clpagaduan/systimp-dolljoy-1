@@ -4,14 +4,14 @@ Design by TEMPLATED
 http://templated.co
 Released for free under the Creative Commons Attribution License
 
-Name       : PlainLeaf 
+Name       : PlainLeaf
 Description: A two-column, fixed-width design with dark color scheme.
 Version    : 1.0
 Released   : 20130902
 
 -->
-<?php 
-session_start(); 
+<?php
+session_start();
 
 require_once('../mysql_connect.php');
 
@@ -62,13 +62,13 @@ require_once('../mysql_connect.php');
 		</ul>
 	</div>
 </div>
-    
+
 <!--    <center><img src="images/request.jpg" style="width:1440px;height:600px" /></center>-->
 
 <div id="featured" class="container">
-	
-<!-- START OF REGISTRATION FORM -->   
-    
+
+<!-- START OF REGISTRATION FORM -->
+
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -82,13 +82,13 @@ $cn=$ca=$cnum=$cea=$cfn=$cln=$crnum=$cra=$un=$pw=$crea=NULL;
 $empties=$invalid=0;
 
 if(isset($_POST['register'])){
-    
-$message=null;
-    
-    
 
-    
-    
+$message=null;
+
+
+
+
+
  if (empty($_POST['CName'])){
   $CName=FALSE;
   $cn="<font color='red'>*</font>";
@@ -119,8 +119,8 @@ if (empty($_POST['CContactNo'])){
  }
  else{
    $CContactNo=$_POST['CContactNo'];
- }   
-    
+ }
+
 if (empty($_POST['CEmailAdd'])){
   $CEmailAdd=FALSE;
   $cea="<font color='red'>*</font>";
@@ -128,8 +128,8 @@ if (empty($_POST['CEmailAdd'])){
   $message .= "Empty company email address";
  }else{
    $CEmailAdd=$_POST['CEmailAdd'];
- }   
-    
+ }
+
 if (empty($_POST['CRepFirstName'])){
     /*echo 'poll 5';*/
   $CRepFName=FALSE;
@@ -139,10 +139,10 @@ if (empty($_POST['CRepFirstName'])){
  }else{
     /*echo 'poll 4';*/
    $CRepFName=$_POST['CRepFirstName'];
- }  
+ }
     /*echo 'poll';*/
 if (empty($_POST['CRepLasName'])){
-    
+
   $CRepLName=FALSE;
   $cfn="<font color='red'>*</font>";
   $empties++;
@@ -150,8 +150,8 @@ if (empty($_POST['CRepLasName'])){
  }else{
    $CRepLName=$_POST['CRepLasName'];
     /*echo $CRepLName;*/
- }  
-    
+ }
+
  if (empty($_POST['CRepContactNo'])){
   $CRepContactNo=FALSE;
   $crnum="<font color='red'>*</font>";
@@ -163,7 +163,7 @@ if (empty($_POST['CRepLasName'])){
   $message .= "Invalid characters on representative's number";
  }else{
    $CRepContactNo=$_POST['CRepContactNo'];
- }   
+ }
  if (empty($_POST['CRepAddress'])){
   $CRepAddress=FALSE;
   $cra="<font color='red'>*</font>";
@@ -171,7 +171,7 @@ if (empty($_POST['CRepLasName'])){
   $message .= "Empty representative address";
  }else{
    $CRepAddress=$_POST['CRepAddress'];
- }   
+ }
  if (empty($_POST['CRepEmailAdd'])){
   $CRepEmailAdd=FALSE;
   $crea="<font color='red'>*</font>";
@@ -179,9 +179,9 @@ if (empty($_POST['CRepLasName'])){
   $message .= "Empty company email address";
  }else{
    $CRepEmailAdd=$_POST['CRepEmailAdd'];
-     
-     
-     
+
+
+
 $query="INSERT INTO `appdev`.`clientaccount`(`CName`, `CAddress`, `CContactNo`, `CEmailAdd`, `CRepFirstName`, `CRepLastName`, `CRepContactNo`, `CRepAddress`, `CRepEmailAdd`, `AccountStatus`) VALUES ('{$CName}', '{$CAddress}', '{$CContactNo}', '{$CEmailAdd}', '{$CRepFName}', '{$CRepLName}', '{$CRepContactNo}', '{$CRepAddress}', '{$CRepEmailAdd}', 'Pending');";
 
 
@@ -191,21 +191,21 @@ $result=mysqli_query($dbc,$query);
 $message="<div class='alert alert-success'><span aria-hidden='true'><b><font color='black'><center>Account has been sent for approval!</center></font></span></div>";
 
 $flag=1;
- }  
-    
+ }
+
 if(isset($message)){
 
 }
 else if ($empties >0 && $invalid ==0){
-    
+
     $message="<div class='alert alert-danger'><span aria-hidden='true'><b><center>Please fill out fields marked with *</center></span></div>";
 }
 else if ($invalid > 0 && $empties == 0){
-    
+
     $message="<div class='alert alert-danger'><span aria-hidden='true'><b><center>Please check your input. For contact numbers, use characters 0-9 only.</center></span></div>";
 }
 else if ($empties > 0 && $invalid >0){
-    
+
     $message="<div class='alert alert-danger'><span aria-hidden='true'><b><center>Please fill out fields marked with *<br>For contact numbers, use characters 0-9 only.</center></span></div>";
 }
  //php code for login
@@ -216,10 +216,10 @@ else if(isset($_POST['login'])){
 if(!empty($_POST['username']) && (!empty($_POST['password']))){
   $username = $_POST['username'];
   $password = ($_POST['password']);
-  
+
   $sql='SELECT CRepUsername,CRepPassword FROM clientaccount WHERE CRepUsername = "'.$username.'" AND CRepPassword = PASSWORD("'.$password.'")';
 
-  
+
   $sql2='SELECT EmployeeUsername,EmployeePassword, employeeType, EmployeeID FROM employeeaccount WHERE EmployeeUsername = "'.$username.'" AND EmployeePassword = PASSWORD("'.$password.'")';
 
   $result= mysqli_query($dbc, $sql);
@@ -247,25 +247,25 @@ if(!empty($_POST['username']) && (!empty($_POST['password']))){
     else{
     $message="<div class='alert alert-danger'><span aria-hidden='true'><b><center>The credentials you provided don't match our records.<br>Please try again.</center></span></div>";
     }
-  
+
 }
 if (empty($_POST['username'])){
   $username=FALSE;
   $un="<font color='red'>*</font>";
   $empties++;
-    
+
 }
 if (empty($_POST['password'])){
   $password=FALSE;
   $pw="<font color='red'>*</font>";
   $empties++;
-    
+
 }
 if ($empties >0){
-    
+
     $message="<div class='alert alert-danger'><span aria-hidden='true'><b><center>Please fill out fields marked with *</center></span></div>";
 }
-    
+
 }
 /*End of main Submit conditional*/
 
@@ -274,17 +274,17 @@ if (isset($message)){
 }
 
 ?>
-    
-    
-<center><h3><b>REQUEST ACCOUNT</b></h3></center>    
-    
+
+
+<center><h3><b>REQUEST ACCOUNT</b></h3></center>
+
 <div class="col-md-12">
     <div class="modal-dialog" style="margin-bottom:0">
         <div class="modal-content">
                     <div class="panel-body">
-                        
+
                         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                           
+
                             <fieldset>
                                 <h5><b>COMPANY DETAILS</b></h5>
                                 <div class="form-group">
@@ -307,7 +307,7 @@ if (isset($message)){
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Representative Last Name" name="CRepLasName" type="text" autofocus="" value="<?php if (isset($_POST['CRepLastName']) && !$flag) echo $_POST['CRepLastName']; ?>" required/>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Representative Address" name="CRepAddress" type="text" autofocus="" value="<?php if (isset($_POST['CRepAddress']) && !$flag) echo $_POST['CRepAddress']; ?>" required/>
                                 </div>
@@ -319,32 +319,32 @@ if (isset($message)){
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <br>
-                             
-                                
+
+
                                 <div class="simform__actions">
-			<input type="submit" class="submit" style= "border:0px; background-color: green; color:white" type="submit" value="Request Account" name="register" data-toggle="modal" data-target="#myModal">
+			<input type="submit"  class="btn btn-fill btn-success" class="submit"  type="submit" value="Request Account" name="register" data-toggle="modal" data-target="#myModal">
 
 			<!--<input type="submit" value="Request Account" name="register">-->
-              <span class="simform__actions-sidetext">By requesting an account you agree to our <a class="special" href="#" target="_blank" role="link">Terms & Privacy</a></span>
-            </div> 
+              <span class="simform__actions-sidetext">&nbsp By requesting an account you agree to our <a class="special" href="#" target="_blank" role="link">Terms & Privacy</a></span>
+            </div>
                             </fieldset>
                         </form>
-                        
+
                     </div>
                 </div>
     </div>
 </div>
 <hr>
-    
-    
+
+
 
 </div>
-    
-<!-- END OF REGISTRATION FORM -->       
-      
+
+<!-- END OF REGISTRATION FORM -->
+
 <div id="copyright" class="container">
 	<p>&copy; Deja Vu. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
 </div>
-    
+
 </body>
 </html>
