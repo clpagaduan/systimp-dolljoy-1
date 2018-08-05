@@ -127,6 +127,45 @@
                                             <a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">Order in queue - </b>Click to start manufacturing</font></span></a>
                                         </div>';
                                   }
+                                
+                                
+                                   $sql2="select sum(Oquantity) as O,Quantity,Supply from Orders, suppliestotal where orderstatus = 'Approved' and Supply ='Vinyl'";
+    $result2=mysqli_query($dbc, $sql2);
+    
+     $sql3="select sum(Oquantity) as O,Quantity,Supply from Orders, suppliestotal where orderstatus = 'Approved'and ManufacturingStatus='In Progress' and Supply ='Hair'";
+                                
+                                
+                                
+                                
+                                
+    $result3=mysqli_query($dbc, $sql3);
+    
+    
+    while ($row = mysqli_fetch_array($result2)  ){
+        $Vtotal =$row['Quantity'];
+             $remove =$row['O'];
+          
+        
+    }
+    
+        
+    while ($row2 = mysqli_fetch_array($result3)  ){
+         $htotal =$row2['Quantity'];
+              $hremove =$row2['O'];
+     
+        
+    }
+    
+    
+
+if($Vtotal<$remove || $htotal< $hremove){
+    
+    echo '
+                                        <div class="alert alert-warning">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                            <span aria-hidden="true"><b><font color="black">Supplies - </b> Manufacturing of orders cannot start due to lack of supplies</font></span>
+                                        </div>';
+}
                                   else if ($new > 1){
                                       echo
                                           '<div class="alert alert-info">
@@ -156,6 +195,8 @@
 																					<a href="employeeManufacturingStatuses.php"><span aria-hidden="true"><b><font color="black">'.$curr.' orders in queue - </b>Click to update manufacturing status</font></span></a>
 																			</div>';
 																}
+                                
+                                
 
 
                                   ?>
