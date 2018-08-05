@@ -293,10 +293,10 @@ if (isset($_POST['submit'])){
                         </div>
                         <div class="card">
                             <div class="header">
-                                <p class="category"><h5><b>1) Select a specification category to add more choices to</b></h5>
-                                <h5><b>2) Enter the new specification choice for the selected category</b></h5>
-                                <h5><b>3) Upload the reference picture for the new specification choice</b></h5>
-                                <h5><b>4) Click 'FINISH' to finish adding the new specification choice</b></h5>
+                                <p class="category">1) Select a specification category to add more choices to<br>
+                              2) Enter the new specification choice for the selected category<br>
+                            3) Upload the reference picture for the new specification choice<br>
+                              4) Click 'FINISH' to finish adding the new specification choice
                                 </p>
                             </div>
                             <div class="content table-responsive table-full-width">

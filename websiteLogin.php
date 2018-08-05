@@ -140,7 +140,7 @@ if ($empties >0){
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <br>
-                                <div class="simform__actions"><input class="sumbit" style= "border:0px; background-color: green; color:white" type="submit" value="Log In" name="login"></div>
+                                <div   class="simform__actions"><input  class="btn btn-fill btn-success" class="sumbit"  type="submit" value="Log In" name="login"></div>
                             </fieldset>
                         </form>
 <?php

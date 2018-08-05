@@ -33,7 +33,7 @@ if (isset($_POST['editOrder'])){
             $ship  = $_POST['ship'];    
             $msta  = $_POST['msta'];     
 
-            $query = "UPDATE orders SET OQuantity = '$qua', OTotalAmount = '$tot', OOrderedDate = '$ord', ORequiredDate ='$req', OPaymentStatus ='$pay', OPaymentDate = '$paym', OShippedDate = '$ssdate' , EndManufacturing = '$mend', StartManufacturing = '$mstart' , OShipmentStatus = '$ship' ,ManufacturingStatus = '$msta'  WHERE OrderID = '".$orderID."'; ";
+            $query = "UPDATE orders SET OrderStatus ='$sta' ,OQuantity = '$qua', OTotalAmount = '$tot', OOrderedDate = '$ord', ORequiredDate ='$req', OPaymentStatus ='$pay', OPaymentDate = '$paym', OShippedDate = '$ssdate' , EndManufacturing = '$mend', StartManufacturing = '$mstart' , OShipmentStatus = '$ship' ,ManufacturingStatus = '$msta'  WHERE OrderID = '".$orderID."'; ";
             $result = mysqli_query($dbc, $query);
         
       
@@ -291,8 +291,18 @@ if (isset($_POST['editOrder'])){
                                 <td width=\"10%\"><div align=\"center\"><b>Order Status</b>
                                 </div></td>
 
-                                <td width=\"10%\"><div align=\"center\"><input name=\"sta\" value =$status
-                                />
+                                <td width=\"10%\"><div align=\"center\">
+                                
+                                  <select style='width:24%' name=\"sta\" value =$status>
+    
+    <option value=$status>$status</option>
+    <option value=\"Approved\">Approved</option>
+    <option value=\"Rejected\">Rejected</option>
+    <option value=\"Pending\">Pending</option>
+
+  </select>
+                                
+                                
                                 </div></td>
                                 </tr>
 
@@ -301,7 +311,7 @@ if (isset($_POST['editOrder'])){
                                 </div></td>
 
                                 <td width=\"10%\"><div align=\"center\"><input name=\"nam\" value =$name
-                                />
+                                 readonly/>
                                 </div></td>
                                 </tr>
 
@@ -310,7 +320,7 @@ if (isset($_POST['editOrder'])){
                                 </div></td>
 
                                 <td width=\"10%\"><div align=\"center\"><input type =\"date\" name=\"ord\" value =$odate
-                                />
+                                readonly/>
                                 </div></td>
                                 </tr>
 
@@ -327,8 +337,15 @@ if (isset($_POST['editOrder'])){
                                 <td width=\"10%\"><div align=\"center\"><b>Payment Status</b>
                                 </div></td>
 
-                                <td width=\"10%\"><div align=\"center\"><input name=\"pay\" value =$pstatus
-                                />
+                                <td width=\"10%\"><div align=\"center\">
+                                <select style='width:24%' name=\"pay\" value =$pstatus>
+    
+    <option value=$pstatus>$pstatus</option>
+    <option value=\"Paid\">Paid</option>
+    <option value=\"Unpaid\">Unpaid</option>
+
+  </select>
+                                
                                 </div></td>
                                 </tr>
 
@@ -341,7 +358,7 @@ if (isset($_POST['editOrder'])){
                                     echo "<input type =\"date\" name=\"paym\" value =$pdate
                                 />";
                                 else
-                                    echo "<input name=\"paym\" value =\"unpaid\"
+                                  echo "<input type =\"date\" name=\"paym\" value =$pdate
                                 />";
                                 echo "
                                 </div></td>
@@ -394,13 +411,25 @@ if (isset($_POST['editOrder'])){
                                 if ($mstatus != 'Completed'){
                                     echo "<font color='red'>";
                                     if (empty($mstatus)){
-                                        echo "<b><input name=\"msta\" value =Not Started
-                                /></b>";
+                                        echo "<b>             <select style='width:24%' name=\"msta\" value =$mstatus>
+    
+    <option value='$mstatus'>$mstatus</option>
+    <option value=\"Pending\">Pending</option>
+    <option value=\"In Progress\">In Progress</option>
+    <option value=\"Completed\">Completed</option>
+
+  </select></b>";
                                     }
-                                    else {
-                                        echo "<b><input name=\"msta\" value =$mstatus
-                                /></b>";
-                                    }
+                               
+                                        echo "<b><select style='width:24%' name=\"msta\" value =$mstatus>
+    
+    <option value='$mstatus'>$mstatus</option>
+    <option value=\"Pending\">Pending</option>
+    <option value=\"In Progress\">In Progress</option>
+    <option value=\"Completed\">Completed</option>
+
+  </select></b>";
+                                    
                                     echo '</font></div></b></td>
                                 </tr>';
 
@@ -440,7 +469,14 @@ if (isset($_POST['editOrder'])){
                                 }
 
                                 else{
-                                    echo "<font color='green'>$mstatus";
+                                    echo "<font color='green'> <b>             <select style='width:24%' name=\"msta\" value =$mstatus>
+    
+    <option value='$mstatus'>$mstatus</option>
+    <option value=\"Pending\">Pending</option>
+    <option value=\"In Progress\">In Progress</option>
+    <option value=\"Completed\">Completed</option>
+
+  </select></b>";
 
                                 echo '</div></b></td>
                                 </tr>';
@@ -490,12 +526,28 @@ if (isset($_POST['editOrder'])){
                                 <td colspan="2"><div align="center"><font color = "white"><b>SHIPPING STATUS: </font>';
 
                                 if ($sstatus != 'Shipped'){
-                                    echo "<font color='red'><input name=\"ship\" value =\"Not Shipped\"
-                                />";
+                                    echo "<font color='red'>
+                                
+                                          <select style='width:24%' name=\"ship\" value =$sstatus>
+    
+    <option value='$sstatus'>$sstatus</option>
+    <option value=\"Shipped\">Shipped</option>
+    <option value=\"Not Shipped\">Not Shipped</option>
+
+
+  </select>
+                                
+                                ";
                                 }
                                 else{
-                                    echo "<font color='green'><input name=\"ship\" value =$sstatus
-                                />";
+                                    echo "<font color='green'> <select style='width:24%' name=\"ship\" value =$sstatus>
+    
+    <option value='$sstatus'>$sstatus</option>
+    <option value=\"Shipped\">Shipped</option>
+    <option value=\"Not Shipped\">Not Shipped</option>
+
+
+  </select>";
                                 }
 
                                 echo'</div></b></td>

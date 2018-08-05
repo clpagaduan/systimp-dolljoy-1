@@ -4,8 +4,13 @@ $sql = "";
 date_default_timezone_set('Asia/Manila');
 $date = date('Y-m-d');
 if (isset($_POST['ship'])){
+    $dates = $_POST['shipdate'];
     $id=$_POST['id'];
-    $sql = "UPDATE Orders SET OShippedDate = DATE(NOW()), OShipmentStatus = 'Shipped' WHERE OrderID = " . $_POST['id'];
+    
+
+    $sql = "UPDATE Orders SET OShippedDate = '$dates', OShipmentStatus = 'Shipped' WHERE OrderID = $id" ;
+    $qu = mysqli_query($dbc, $sql);
+
 }
 if (isset($_POST['paid'])){
     echo "<div class=\"alert alert-success\" align=\"center\">
@@ -213,9 +218,10 @@ if (!empty($sql))
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <p class="category">*Needs INSTRUCTIONS</p>
+                                <p class="category">1) Enter OR number to a payment to an order <br>
+2) Once the OR number is filled out, click 'PAID' to update the payment status</p>
                             </div>
-                                <div class="content table-responsive table-full-width"style='overflow:auto; max-height:500px;'>
+                                <div class="content table-responsive table-full-width"style='overflow:auto; max-height:32vh;'>
                                 
                                 <table class="table table-hover" >
                                     <thead>
@@ -224,8 +230,10 @@ if (!empty($sql))
                                         <th><p class="category"><b>QUANTITY</b></p></th>
                                         <th><p class="category"><b>DATE ORDER</b></p></th>
                                         <th><p class="category"><b>DATE REQUIRED</b></p></th>
+                                         <th><p class="category"><b>  OR NUMBER</b></p></th>
                     
                                     </thead>
+                                    
                                     
 <?php
 
@@ -244,31 +252,6 @@ $numRows2 = mysqli_num_rows($result2);
         $message="No orders to show";
     }
     
-//SHIP
-while($row=mysqli_fetch_array($result2,MYSQLI_ASSOC)){
-
-$id=$row['OrderID'];
-
-echo 
-"
-<tbody>
-<tr>
-
-<td><b><a href=\"prodManCurrentOrderID.php?id=$id \">{$row['OrderID']}</a></b></td>
-<td><b>{$row['CName']}</b></td>
-<td><b>{$row['OQuantity']}</b></td>
-<td><b>{$row['OOrderedDate']}</b></td>
-<td><b>{$row['ORequiredDate']}</b></td>
-
-
-<td>
-                            <form action=\"prodManPaymentShipment.php\" method=\"post\">
-                            <input type = \"submit\" name =\"ship\" class=\"btn btn-fill btn-success\" value=\"SHIP\">
-                            <input type = \"hidden\" name =\"id\" class=\"\" value=\"".$id."\">
-                            </form></td></tr>
-";
-    
-}
                                     
 //PAID
 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -278,23 +261,27 @@ $id=$row['OrderID'];
 echo 
 "
 <tr>
-
+<form action=\"prodManPaymentShipment.php\" method=\"post\">
 <td><b><a href=\"prodManCurrentOrderID.php?id=$id \">{$row['OrderID']}</a></b></td>
 <td><b>{$row['CName']}</b></td>
 <td><b>{$row['OQuantity']}</b></td>
 <td><b>{$row['OOrderedDate']}</b></td>
 <td><b>{$row['ORequiredDate']}</b></td>
 
+<td><b><input type=\"number\" name=\"ORnum\" required ></b></td>
+
 
 
 <td>
                            
-                            <input type = \"button\"  class=\"btn btn-fill btn-danger\" value=\"PAID\" data-toggle=\"modal\" data-target=\"#exampleModal\">
-                            <input type = \"hidden\" name =\"id\" class=\"\" value=\"".$id."\">
+                             
+                            <input type = \"submit\"  name=\"paid\" class=\"btn btn-fill btn-danger\" value=\"PAID\" >
+                            <input type = \"hidden\" name =\"id\" class=\"\" value=\"$id\"></form>
                             </td></tr>
 ";
-?>
-    <?php 
+
+    
+    ;
 }?>
                                     
                                     
@@ -314,10 +301,93 @@ echo
                         </div>
                         
                         
+                        
+                        
+                        
+                        
+                        
                         <br>
                         
+                       
                     </div>
                     
+                     <div class="card">
+                            <div class="header">
+                                <p class="category">    <p class="category">1) Select a Date to a Shipment Date to an order <br>
+2) Once the Shipment Date is selected, click 'SHIP' to update the shipment status</p>
+                            </div>
+                        <div class="content table-responsive table-full-width"style='overflow:auto; max-height:32vh;'>
+                                
+                                <table class="table table-hover" >
+                                    <thead>
+                                        <th><p class="category"><b>ORDER ID</b></p></th>
+                                        <th><p class="category"><b>COMPANY</b></p></th>
+                                        <th><p class="category"><b>QUANTITY</b></p></th>
+                                        <th><p class="category"><b>DATE ORDER</b></p></th>
+                                        <th><p class="category"><b>DATE REQUIRED</b></p></th>
+                                         <th><p class="category"><b>DATE SHIPPED</b></p></th>
+                    
+                                    </thead>
+                                    
+<?php
+
+//PAID
+$query="SELECT *, C.CName from Orders O join ClientAccount C on O.OCompanyID=C.CompanyID WHERE OShipmentStatus='Not shipped'  AND OrderStatus='Approved' AND CompanyID = OCompanyID";
+$result=mysqli_query($dbc,$query);
+
+$numRows = mysqli_num_rows($result);
+                                    
+
+
+                             
+//PAID
+while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+
+$id=$row['OrderID'];
+
+echo 
+"
+<tr>
+  <form action=\"prodManPaymentShipment.php\" method=\"post\">
+<td><b><a href=\"prodManCurrentOrderID.php?id=$id \">{$row['OrderID']}</a></b></td>
+<td><b>{$row['CName']}</b></td>
+<td><b>{$row['OQuantity']}</b></td>
+<td><b>{$row['OOrderedDate']}</b></td>
+<td><b>{$row['ORequiredDate']}</b></td>
+<td><b><input type=\"date\" name=\"shipdate\" required></b></td>
+
+
+
+<td>
+                          
+                            <input type = \"submit\"  name=\"ship\" class=\"btn btn-fill btn-success\" value=\"SHIP\" >
+                            <input type = \"hidden\" name =\"id\" class=\"\" value=\"$id\"></form>
+                            </td></tr>
+";
+    
+  
+
+    
+    ;
+}?>
+                                    
+                                    
+                                    </table>
+                                    
+    <center>
+    <label>
+        <?php 
+            if(isset($message)){
+                echo $message;
+            }
+        ?>
+            
+    </label>
+    </center>
+
+                        </div>
+                        
+                    </div>
                 </div>
 
 
@@ -338,24 +408,7 @@ echo
 
     </div>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Accept Payment</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body"> Input Official Receipts (OR) number: <input type="number" name="ORnum" required>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" name ="paid"  class="btn btn-secondary">accept</button>
-            <button type="button"  class="btn btn-primary" data-dismiss="modal">cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 <div></div>
 
 

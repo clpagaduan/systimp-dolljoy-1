@@ -218,7 +218,8 @@
                             
                             if (isset($_GET["id"])){
                                 $id = $_GET['id'];
-                                $query = "SELECT *, FORMAT(OTotalAmount,2) AS OTotalAmount, FORMAT(OQuantity,0) AS OQuantity, FORMAT(OPrice,2) AS OPrice, ClientAccount.CName AS 'Name', Product.ProductType AS 'Type', Product.ProductName AS 'PName' FROM Orders O INNER JOIN ClientAccount ON O.OCompanyID=ClientAccount.CompanyID INNER JOIN Product ON O.OProductID=Product.ProductID WHERE OrderID = ".$id;
+                                $query = "SELECT *, FORMAT(OTotalAmount,2) AS OTotalAmount, FORMAT(OQuantity,0) AS OQuantity, FORMAT(OPrice,2) AS OPrice, ClientAccount.CName AS 'Name', Product.ProductType AS 'Type', Product.ProductName AS 'PName' FROM Orders O INNER JOIN ClientAccount ON O.OCompanyID=ClientAccount.CompanyID INNER JOIN ordersrefs ON O.orderid=ordersrefs.orderid
+inner join product on product.productid = ordersrefs.productid WHERE ordersrefs.OrderID =$id group by ordersrefs.productid";
                                 
                                 // ORDER DETAILS TABLE
                                     
