@@ -4,7 +4,7 @@ Design by TEMPLATED
 http://templated.co
 Released for free under the Creative Commons Attribution License
 
-Name       : PlainLeaf 
+Name       : PlainLeaf
 Description: A two-column, fixed-width design with dark color scheme.
 Version    : 1.0
 Released   : 20130902
@@ -38,36 +38,36 @@ Released   : 20130902
 		</ul>
 	</div>
 </div>
-    
+
 <!--    <center><img src="/images/bnwdolls.jpg" style="width:1440px;height:600px" /></center>-->
 <div id="featured" class="container">
-    
-<!-- START OF LOGIN FORM -->       
-    
+
+<!-- START OF LOGIN FORM -->
+
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
-<?php 
-session_start(); 
+<?php
+session_start();
 
 require_once('../mysql_connect.php');
 
  $flag=0;
  $message=null;
     if(isset($_POST['login'])){
-        
-        
+
+
 
    $empties=$invalid=0;
 
 if(!empty($_POST['username']) && (!empty($_POST['password']))){
   $username = $_POST['username'];
   $password = ($_POST['password']);
-  
+
   $sql='SELECT CRepUsername,CRepPassword FROM clientaccount WHERE CRepUsername = "'.$username.'" AND CRepPassword = PASSWORD("'.$password.'")';
 
-  
+
   $sql2='SELECT EmployeeUsername,EmployeePassword, employeeType, EmployeeID FROM employeeaccount WHERE EmployeeUsername = "'.$username.'" AND EmployeePassword = PASSWORD("'.$password.'")';
 
   $result= mysqli_query($dbc, $sql);
@@ -95,25 +95,25 @@ if(!empty($_POST['username']) && (!empty($_POST['password']))){
     else{
     $message="<div class='alert alert-danger'><span aria-hidden='true'><b><center>The credentials you provided don't match our records.<br>Please try again.</center></span></div>";
     }
-  
+
 }
 if (empty($_POST['username'])){
   $username=FALSE;
   $un="<font color='red'>*</font>";
   $empties++;
-    
+
 }
 if (empty($_POST['password'])){
   $password=FALSE;
   $pw="<font color='red'>*</font>";
   $empties++;
-    
+
 }
 if ($empties >0){
-    
+
     $message="<div class='alert alert-danger'><span aria-hidden='true'><b><center>Please do not leave the fields blank</center></span></div>";
 }
-    
+
 }
     /*End of main Submit conditional*/
 
@@ -121,9 +121,9 @@ if ($empties >0){
      echo '<font color="blue">'.$message. '</font>';
     }
 
-?>    
+?>
 <center><h3><b>LOGIN</b></h3></center>
-    
+
 <div class="col-md-12">
     <div class="modal-dialog" style="margin-bottom:0">
         <div class="modal-content">
@@ -144,9 +144,9 @@ if ($empties >0){
                             </fieldset>
                         </form>
 <?php
-   
+
 ?>
-                    
+
 
                     </div>
                 </div>
@@ -155,8 +155,8 @@ if ($empties >0){
 <hr>
 
 </div>
-    
-<!-- END OF LOGIN FORM -->   
+
+<!-- END OF LOGIN FORM -->
 
 <div id="copyright" class="container">
 	<p>&copy; Deja Vu. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
