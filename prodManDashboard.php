@@ -377,6 +377,51 @@
                                     <span aria-hidden="true"><b><font color="black">No pending notifications</font></span>
                                 </div>';
                                   }
+                                
+                                
+                                
+                                  $sql2="select sum(Oquantity) as O,Quantity,Supply from Orders, suppliestotal where orderstatus = 'Approved' and Supply ='Vinyl'";
+    $result2=mysqli_query($dbc, $sql2);
+    
+     $sql3="select sum(Oquantity) as O,Quantity,Supply from Orders, suppliestotal where orderstatus = 'Approved'and ManufacturingStatus='In Progress' and Supply ='Hair'";
+                                
+                                
+                                
+                                
+                                
+    $result3=mysqli_query($dbc, $sql3);
+    
+    
+    while ($row = mysqli_fetch_array($result2)  ){
+        $Vtotal =$row['Quantity'];
+             $remove =$row['O'];
+          
+        
+    }
+    
+        
+    while ($row2 = mysqli_fetch_array($result3)  ){
+         $htotal =$row2['Quantity'];
+              $hremove =$row2['O'];
+     
+        
+    }
+    
+    
+
+if($Vtotal<$remove || $htotal< $hremove){
+    
+    echo '
+                                        <div class="alert alert-warning">
+                                            <a href="prodManInventoryManagement.php"><button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                                            <span aria-hidden="true"><b><font color="black">Supplies - </b> Manufacturing of orders cannot start due to lack of supplies</font></span></a>
+                                        </div>';
+}
+                                
+                                
+                                
+                                
+                                
                                  $hper = $hair['Quantity']/100*100;
                                 if ($hair['Quantity'] < 5000){
 
