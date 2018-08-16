@@ -90,7 +90,7 @@ Released   : 20130902
 //                echo $dollName;
 //            }
             
-            echo $dollID . $dollName . $hair . $eye . $skin . $size . $gen . $qty;
+//            echo $dollID . $dollName . $hair . $eye . $skin . $size . $gen . $qty;
             
             $addToCart = "INSERT INTO cart (userName, productID, productName, productGender, productDesc, prefHair, prefSkin, prefEye, prefSize, quantity, price, subtotal) VALUES ('{$username}', '{$dollID}', '{$dollName}', '{$gen}', '{$xDesc}', '{$hair}', '{$skin}', '{$eye}', '{$size}', '{$qty}', '{$xPrice}', '{$xSubTotal}')";
 //            echo $dollID;
