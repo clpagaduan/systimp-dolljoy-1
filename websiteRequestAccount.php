@@ -50,7 +50,9 @@ require_once('../mysql_connect.php');
 </div>
 <div id="header" class="container">
 	<div id="logo">
-<h1><a href="websiteHome.php"><font color="#68B3C8">DOLLJOY</font></a></h1>	</div>
+        <h3><a href="websiteHome.php"><img src="images/logo.png" style="width:100px;height:50px;"/> </a></h3>
+<!--        <h1><a href="websiteHome.php"><font color="#68B3C8">DOLLJOY</font></a></h1>	-->
+    </div>
 	<div id="menu">
 		<ul>
 			<li><a href="websiteHome.php" accesskey="1" title="">Homepage</a></li>

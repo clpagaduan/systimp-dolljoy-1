@@ -18,7 +18,10 @@ if (isset($_POST['paid'])){
 </div>";
     $id=$_POST['id'];
     $ORnum=$_POST['ORnum'];
-    $sql = "UPDATE Orders SET ORnumber= '".$ORnum."' ,OPaymentDate = DATE(NOW()), OPaymentStatus = 'Paid' WHERE OrderID = " . $_POST['id'];
+    $imagename = $_FILES['myimage']['name'];
+    $imagetmp = addslashes(file_get_contents($_FILES['myimage']['tmp_name']));
+    
+    $sql = "UPDATE Orders SET ORnumber= '".$ORnum."' , ORimage = '".$imagetmp."', OPaymentDate = DATE(NOW()), OPaymentStatus = 'Paid' WHERE OrderID = " . $_POST['id'];
 }
 
 if (!empty($sql))
@@ -56,7 +59,7 @@ if (!empty($sql))
 
 </head>
 <body>
- <form action="prodManPaymentShipment.php" method="post">
+ <form action="prodManPaymentShipment.php" method="post" enctype="multipart/form-data">
 <div class="wrapper">
 	<div class="sidebar" data-background-color="white" data-active-color="info">
 
@@ -230,7 +233,8 @@ if (!empty($sql))
                                         <th><p class="category"><b>QUANTITY</b></p></th>
                                         <th><p class="category"><b>DATE ORDER</b></p></th>
                                         <th><p class="category"><b>DATE REQUIRED</b></p></th>
-                                         <th><p class="category"><b>  OR NUMBER</b></p></th>
+                                        <th><p class="category"><b>  OR NUMBER</b></p></th>
+                                        <th><p class="category"><b> UPLOAD </b></p></th>
                     
                                     </thead>
                                     
@@ -261,7 +265,7 @@ $id=$row['OrderID'];
 echo 
 "
 <tr>
-<form action=\"prodManPaymentShipment.php\" method=\"post\">
+<form action=\"prodManPaymentShipment.php\" method=\"post\" enctype=\"multipart/form-data\">
 <td><b><a href=\"prodManCurrentOrderID.php?id=$id \">{$row['OrderID']}</a></b></td>
 <td><b>{$row['CName']}</b></td>
 <td><b>{$row['OQuantity']}</b></td>
@@ -269,7 +273,7 @@ echo
 <td><b>{$row['ORequiredDate']}</b></td>
 
 <td><b><input type=\"number\" name=\"ORnum\" required ></b></td>
-
+<td><b><input type=\"file\" name=\"myimage\" required ></b></td>
 
 
 <td>
